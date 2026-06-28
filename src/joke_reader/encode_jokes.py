@@ -160,7 +160,7 @@ class KokoroTTSWriter:
         print(f"Generating audio for voice: {self.voice}... to {output_path}")
         return output_path, digest
 
-    def write_to_hashpath(self, text: str):
+    def write_to_hashpath(self, text: str, file_ext: str = "ogg"):
         """
         Generate audio from the provided text and save it to the specified output file.
         :param text: The text to convert to speech.
@@ -170,7 +170,7 @@ class KokoroTTSWriter:
         output_path = hash_path(self.output_dir, digest)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         leaf_name = re.sub(r'\W+', '_', text)[:50]  # Sanitize filename
-        output_path = f"{output_path}-{self.output_ext}-{leaf_name}"
+        output_path = f"{output_path}-{leaf_name}.{self.output_ext}"
         sf.write(output_path,
                  data=samples,
                  samplerate=self.samplerate,
