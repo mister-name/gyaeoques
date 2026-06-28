@@ -10,6 +10,7 @@ dependencies = [
     "pgvector>=0.4.2",
     "psycopg2-binary>=2.9.12",
     "pudb>=2025.1.5",
+    "pykokoro>=0.6.5",
     "soundfile>=0.14.0",
     "sqlalchemy>=2.0.51",
     # pykokoro requires Python >=3.11 (onnxruntime constraint).
@@ -30,7 +31,7 @@ package = true
 
 [project.scripts]
 # Ingest jokes from a file or command line into the database
-joke-ingest       = "joke_reader.ingester:main"
+joke-injest       = "joke_reader.ingester:main"
 # Generate Kokoro TTS audio for all jokes that lack a media row
 joke-encode       = "joke_reader.encode_all_jokes:main"
 # Generate semantic embeddings for all jokes that lack one
