@@ -1,0 +1,39 @@
+[project]
+name = "joke-talker"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "alembic>=1.18.5",
+    "hatchling>=1.30.1",
+    "pgvector>=0.4.2",
+    "psycopg2-binary>=2.9.12",
+    "pudb>=2025.1.5",
+    "soundfile>=0.14.0",
+    "sqlalchemy>=2.0.51",
+    # pykokoro requires Python >=3.11 (onnxruntime constraint).
+    # Install manually once on Python 3.11+:  uv add pykokoro
+    "torch>=2.12.1",
+    "transformers>=5.12.1",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/joke_reader", "db"]
+
+[tool.uv]
+package = true
+
+[project.scripts]
+# Ingest jokes from a file or command line into the database
+joke-ingest       = "joke_reader.ingester:main"
+# Generate Kokoro TTS audio for all jokes that lack a media row
+joke-encode       = "joke_reader.encode_all_jokes:main"
+# Generate semantic embeddings for all jokes that lack one
+joke-embed        = "joke_reader.make_embeddings:main"
+# Low-level Kokoro TTS writer (encode an input file of quoted strings)
+joke-tts          = "joke_reader.encode_jokes:main"
