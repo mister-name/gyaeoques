@@ -11,14 +11,15 @@ import argparse
 import sys
 import uuid
 
-from sqlalchemy import select
+from sqlalchemy import select, or_, and_
 from sqlalchemy.orm import joinedload
 
 from db.database import get_session, init_db
 from db.models import Joke, Media
 from joke_reader.encode_jokes import KokoroTTSWriter
 
-VOICES_BIN_DEFAULT = "./voices-v1.0.bin"
+
+VOICES_BIN_DEFAULT = "~/projs/speak/voices-v1.0.bin"
 VOICE_DEFAULT = "af_sarah"
 LANG_DEFAULT = "en-US"
 OUTPUT_DIR_DEFAULT = "./media"
@@ -104,7 +105,9 @@ def encode_all_jokes(
             stmt = (
                 select(Joke)
                 .outerjoin(Media, Media.joke_uuid == Joke.uuid)
-                .where(Media.joke_uuid.is_(None))
+                .where(or_(Media.joke_uuid.is_(None),
+                       Media.hash.is_(None),
+                       Media.path.is_(None)))
                 .options(joinedload(Joke.media))
             )
             jokes = session.scalars(stmt).unique().all()
