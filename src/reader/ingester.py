@@ -6,8 +6,7 @@ Provides a Python functional interface for adding new joke texts to the
 database, plus a CLI argparse interface that lets the user specify a file of
 jokes to load or supply a joke directly on the command line.
 
-Usage examples
---------------
+Usage:
 # Ingest a file of jokes (one per line):
     python -m joke_reader.ingester -f jokes.txt
 
@@ -23,10 +22,9 @@ from db.database import get_session, init_db
 from db.models import Joke
 
 
-# ---------------------------------------------------------------------------
+################
 # Core functions
-# ---------------------------------------------------------------------------
-
+################
 def insert_joke(text: str) -> Joke:
     """
     Insert a single joke into the database after sanitising its text.
@@ -68,11 +66,9 @@ def insert_jokes(filename: str) -> list[Joke]:
     print(f"Inserted {len(jokes)} joke(s) from {filename!r}.")
     return jokes
 
-
-# ---------------------------------------------------------------------------
-# CLI
-# ---------------------------------------------------------------------------
-
+##########
+# CLI args
+##########
 def get_args(argv: list[str] | None = None) -> argparse.Namespace:
     """
     Build and return the parsed argument namespace.
